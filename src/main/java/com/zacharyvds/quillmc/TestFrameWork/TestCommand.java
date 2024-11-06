@@ -1,16 +1,23 @@
-package CAZA.custom_Framework.TestFrameWork;
+package com.zacharyvds.quillmc.TestFrameWork;
 
-import CAZA.custom_Framework.domain.command.CustomCommandExecutor;
-import CAZA.custom_Framework.domain.plugin.annotations.PluginRegistered;
+import com.zacharyvds.quillmc.domain.command.CustomCommandExecutor;
+import com.zacharyvds.quillmc.domain.plugin.annotations.PluginRegistered;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 @PluginRegistered
 public class TestCommand extends CustomCommandExecutor{
+
+    private final TestService testService;
+
+    public TestCommand(TestService testService) {
+        this.testService = testService;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        commandSender.sendMessage("Test commando succesvol uitgevoerd!");
+        testService.someServiceMethod(commandSender);
         return true;
     }
 }

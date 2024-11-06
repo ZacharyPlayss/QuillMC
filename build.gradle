@@ -63,7 +63,7 @@ publishing {
         mavenJava(MavenPublication) {
             artifact(tasks.shadowJar)
             groupId = project.group
-            artifactId = "custom_framework"
+            artifactId = "quill_mc"
             version = project.version
         }
     }

@@ -1,6 +1,6 @@
-package CAZA.custom_Framework.domain.plugin;
+package com.zacharyvds.quillmc.domain.plugin;
 
-import CAZA.custom_Framework.domain.plugin.Registration.RegistrationHandler;
+import com.zacharyvds.quillmc.domain.plugin.Registration.RegistrationHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomPlugin extends JavaPlugin {
@@ -12,7 +12,7 @@ public class CustomPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        registrationHandler.registerAnnotatedClasses();
+        registrationHandler.initializeRegistrations();
     }
 
     @Override public void onDisable(){

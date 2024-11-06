@@ -1,4 +1,4 @@
-package CAZA.custom_Framework.domain.command;
+package com.zacharyvds.quillmc.domain.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

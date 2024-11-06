@@ -1,4 +1,4 @@
-package CAZA.custom_Framework.domain.utils;
+package com.zacharyvds.quillmc.domain.utils;
 
 import org.reflections.Reflections;
 

@@ -1,6 +1,6 @@
 name: Custom_Framework
 version: '1.0-SNAPSHOT'
-main: CAZA.custom_Framework.Custom_Framework
+main: com.zacharyvds.quillmc.Custom_Framework
 api-version: '1.19'
 
 commands:

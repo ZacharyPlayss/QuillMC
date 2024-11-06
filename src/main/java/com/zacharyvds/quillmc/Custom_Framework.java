@@ -1,6 +1,6 @@
-package CAZA.custom_Framework;
+package com.zacharyvds.quillmc;
 
-import CAZA.custom_Framework.domain.plugin.CustomPlugin;
+import com.zacharyvds.quillmc.domain.plugin.CustomPlugin;
 
 public final class Custom_Framework extends CustomPlugin {
 

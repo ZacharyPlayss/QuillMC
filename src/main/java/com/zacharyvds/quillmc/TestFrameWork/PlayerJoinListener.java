@@ -1,7 +1,7 @@
-package CAZA.custom_Framework.TestFrameWork;
+package com.zacharyvds.quillmc.TestFrameWork;
 
-import CAZA.custom_Framework.domain.events.CustomEventListener;
-import CAZA.custom_Framework.domain.plugin.annotations.PluginRegistered;
+import com.zacharyvds.quillmc.domain.events.CustomEventListener;
+import com.zacharyvds.quillmc.domain.plugin.annotations.PluginRegistered;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;

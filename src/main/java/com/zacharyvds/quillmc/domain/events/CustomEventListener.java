@@ -1,4 +1,4 @@
-package CAZA.custom_Framework.domain.events;
+package com.zacharyvds.quillmc.domain.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;

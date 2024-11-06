@@ -1,4 +1,4 @@
-package CAZA.custom_Framework.domain.plugin.annotations;
+package com.zacharyvds.quillmc.domain.plugin.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

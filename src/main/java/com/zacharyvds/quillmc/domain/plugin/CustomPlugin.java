@@ -27,4 +27,5 @@ public class CustomPlugin extends JavaPlugin {
     public String getBasePackageName() {
         return basePackageName;
     }
+
 }

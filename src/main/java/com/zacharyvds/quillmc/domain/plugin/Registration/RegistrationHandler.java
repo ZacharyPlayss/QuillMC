@@ -59,10 +59,13 @@ public class RegistrationHandler {
                 }
                 if(CustomCommandExecutor.class.isAssignableFrom(clazz)){
                     Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+                    PluginRegistered annotation = clazz.getAnnotation(PluginRegistered.class);
+                    boolean isCommand = annotation.isCommand();
+                    String commandName = annotation.commandName();
                     if(constructors.length == 1 && constructors[0].getParameterCount() == 0){
-                        handleCommandRegistrationWithEmptyConstructor(clazz);
+                        handleCommandRegistrationWithEmptyConstructor(clazz, isCommand, commandName);
                     }else{
-                        handleCommandRegistrationWithComponents(clazz);
+                        handleCommandRegistrationWithComponents(clazz, isCommand, commandName);
                     }
                 }
             }catch(Exception e){
@@ -72,7 +75,7 @@ public class RegistrationHandler {
         }
     }
 
-    private void handleCommandRegistrationWithComponents(Class<?> clazz){
+    private void handleCommandRegistrationWithComponents(Class<?> clazz, boolean isCommand, String commandName){
         try{
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             Constructor<?> chosenConstructor = getConstructorWithMostArguments(constructors);
@@ -85,9 +88,17 @@ public class RegistrationHandler {
                     Object component = pluginComponentContext.getComponent(paramType);
                     parameters[i] = component;
                 }
-
                 Object instance = chosenConstructor.newInstance(parameters);
-                String commandName = extractCommandName(clazz.getSimpleName());
+
+                if(isCommand && commandName == null){
+                    throw new RuntimeException("commandName must be set when isCommand is true.");
+                }
+                if(isCommand && commandName != null){
+                    plugin.getCommand(commandName).setExecutor((CustomCommandExecutor) instance);
+                    logger.info("Registered command executor: " + commandName);
+                    return;
+                }
+                commandName = extractCommandName(clazz.getSimpleName());
                 if (commandName != null) {
                     plugin.getCommand(commandName).setExecutor((CustomCommandExecutor) instance);
                     logger.info("Registered command executor with components: " + commandName);
@@ -99,6 +110,7 @@ public class RegistrationHandler {
         }
     }
 
+
     private String extractCommandName(String fullCommandClassName){
         if(fullCommandClassName.endsWith("Command")){
             return fullCommandClassName.substring(0, fullCommandClassName.length() - "Command".length()).toLowerCase();
@@ -106,10 +118,18 @@ public class RegistrationHandler {
         return null;
     }
 
-    protected void handleCommandRegistrationWithEmptyConstructor(Class<?> clazz){
+    protected void handleCommandRegistrationWithEmptyConstructor(Class<?> clazz, boolean isCommand, String commandName){
         try{
             Object instance = clazz.getDeclaredConstructor().newInstance();
-            String commandName = clazz.getSimpleName();
+            if(isCommand && commandName == null){
+                throw new RuntimeException("commandName must be set when isCommand is true.");
+            }
+            if(isCommand && commandName != null){
+                plugin.getCommand(commandName).setExecutor((CustomCommandExecutor) instance);
+                logger.info("Registered command executor: " + commandName);
+                return;
+            }
+            commandName = clazz.getSimpleName();
             if (commandName.endsWith("Command")) {
                 commandName = commandName.substring(0, commandName.length() - "Command".length()).toLowerCase();
             }

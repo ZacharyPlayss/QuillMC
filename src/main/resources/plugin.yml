@@ -7,3 +7,6 @@ commands:
   test:
     description: "Check if a this thing works or not"
     usage: /test
+  pizza:
+    description: "Return a random pizza flavor"
+    sage: /pizza

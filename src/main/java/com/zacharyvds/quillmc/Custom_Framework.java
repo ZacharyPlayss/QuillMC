@@ -7,6 +7,7 @@ public final class Custom_Framework extends CustomPlugin {
     @Override
     public void onEnable() {
         //PLUGIN ENABLE LOGIC
+        super.setBasePackageName(this.getClass().getPackageName());
         super.onEnable();
 
     }

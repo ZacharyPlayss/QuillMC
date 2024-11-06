@@ -1,12 +1,11 @@
 package CAZA.custom_Framework.domain.plugin;
 
 import CAZA.custom_Framework.domain.plugin.Registration.RegistrationHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomPlugin extends JavaPlugin {
     private final RegistrationHandler registrationHandler;
-
+    private String basePackageName;
     public CustomPlugin() {
         this.registrationHandler = new RegistrationHandler(this, getLogger());
     }
@@ -20,4 +19,11 @@ public class CustomPlugin extends JavaPlugin {
 
     }
 
+    public void setBasePackageName(String basePackageName) {
+        this.basePackageName = basePackageName;
+    }
+
+    public String getBasePackageName() {
+        return basePackageName;
+    }
 }

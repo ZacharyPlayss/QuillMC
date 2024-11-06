@@ -19,7 +19,7 @@ public abstract class CustomEventDispatcher {
         listeners.remove(listener);
     }
 
-    public void throwEvent(Event event){
+    public void dispatchEvent(Event event){
         Bukkit.getServer().getPluginManager().callEvent(event);
     }
 

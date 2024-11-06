@@ -3,27 +3,29 @@ package CAZA.custom_Framework.domain.plugin.Registration;
 import CAZA.custom_Framework.domain.command.CustomCommandExecutor;
 import CAZA.custom_Framework.domain.events.CustomEventListener;
 import CAZA.custom_Framework.domain.plugin.CustomPlugin;
+import CAZA.custom_Framework.domain.plugin.annotations.PluginRegistered;
 import CAZA.custom_Framework.domain.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.reflections.Reflections;
 
 
 import java.util.Set;
 import java.util.logging.Logger;
 
 public class RegistrationHandler {
-    private final JavaPlugin plugin;
+    private final CustomPlugin plugin;
     private final Logger logger;
 
-    public RegistrationHandler(JavaPlugin plugin, Logger logger) {
+    public RegistrationHandler(CustomPlugin plugin, Logger logger) {
         this.plugin = plugin;
         this.logger = logger;
     }
 
     public void registerAnnotatedClasses(){
-        Set<Class<?>> annotatedClasses = ReflectionUtils.getClassesWithAnnotation("CAZA.custom_Framework", PluginRegistered.class);
+        Set<Class<?>> annotatedClasses = ReflectionUtils.getClassesWithAnnotation(plugin.getBasePackageName(), PluginRegistered.class);
 
         for(Class<?> clazz : annotatedClasses){
             try{
@@ -49,4 +51,5 @@ public class RegistrationHandler {
             }
         }
     }
+
 }

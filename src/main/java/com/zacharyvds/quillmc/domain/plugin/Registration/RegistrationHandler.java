@@ -15,7 +15,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -107,7 +106,7 @@ public class RegistrationHandler {
         return null;
     }
 
-    private void handleCommandRegistrationWithEmptyConstructor(Class<?> clazz){
+    protected void handleCommandRegistrationWithEmptyConstructor(Class<?> clazz){
         try{
             Object instance = clazz.getDeclaredConstructor().newInstance();
             String commandName = clazz.getSimpleName();
@@ -122,7 +121,7 @@ public class RegistrationHandler {
         }
     }
 
-    private void handleListenerRegistration(Class<?> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    protected void handleListenerRegistration(Class<?> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Object instance = clazz.getDeclaredConstructor(Plugin.class).newInstance(plugin);
         Bukkit.getPluginManager().registerEvents((Listener) instance, plugin);
         logger.info("Registered event listener: " + clazz.getSimpleName());

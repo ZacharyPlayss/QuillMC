@@ -15,6 +15,10 @@ public abstract class CustomEventDispatcher {
         }
     }
 
+    public List<CustomEventListener> getListeners() {
+        return listeners;
+    }
+
     public void removeListener(CustomEventListener listener) {
         listeners.remove(listener);
     }

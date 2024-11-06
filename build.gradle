@@ -2,16 +2,21 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'jacoco-report-aggregation'
 }
 
 group = 'com.zacharyvds'
-version = '1.0.0'
+version = '1.0.1'
+
+tasks.named('check') {
+    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+}
 
 repositories {
     mavenCentral()
     maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
     maven {
         name = "sonatype"
@@ -20,8 +25,18 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
     implementation 'org.reflections:reflections:0.10.2'
+
+    //TESTING
+    testImplementation 'org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.mockito:mockito-core:5.14.1'
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 def targetJavaVersion = 17

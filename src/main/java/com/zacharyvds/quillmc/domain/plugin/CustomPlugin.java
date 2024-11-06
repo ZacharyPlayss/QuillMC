@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CustomPlugin extends JavaPlugin {
     private final RegistrationHandler registrationHandler;
     private String basePackageName;
+
     public CustomPlugin() {
         this.registrationHandler = new RegistrationHandler(this, getLogger());
     }

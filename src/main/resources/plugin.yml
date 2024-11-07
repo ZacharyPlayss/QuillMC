@@ -9,4 +9,7 @@ commands:
     usage: /test
   pizza:
     description: "Return a random pizza flavor"
-    sage: /pizza
+    usage: /pizza
+  vst:
+    descipriont: "Test for virtual servers"
+    usage: /vst

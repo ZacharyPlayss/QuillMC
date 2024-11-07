@@ -4,9 +4,11 @@ import com.zacharyvds.quillmc.domain.command.CustomCommandExecutor;
 import com.zacharyvds.quillmc.domain.events.CustomEventListener;
 import com.zacharyvds.quillmc.domain.plugin.CustomPlugin;
 import com.zacharyvds.quillmc.domain.plugin.annotations.PluginRegistered;
+import com.zacharyvds.quillmc.domain.plugin.annotations.QuillComponent;
 import com.zacharyvds.quillmc.domain.plugin.annotations.QuillService;
 import com.zacharyvds.quillmc.domain.service.CustomService;
 import com.zacharyvds.quillmc.domain.utils.ReflectionUtils;
+import javassist.tools.reflect.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -16,21 +18,36 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class NewRegistrationHandler {
+public class RegistrationHandler {
     private final CustomPlugin plugin;
     private final Logger logger;
     private final PluginComponentContext pluginComponentContext;
 
-    public NewRegistrationHandler(CustomPlugin plugin, Logger logger ) {
+    public RegistrationHandler(CustomPlugin plugin, Logger logger ) {
         this.plugin = plugin;
         this.logger = logger;
         this.pluginComponentContext = new PluginComponentContext(plugin);
     }
 
     public void initializeRegistrations(){
+        registerComponents();
         registerAnnotatedClasses(QuillService.class, CustomService.class);
         registerAnnotatedClasses(PluginRegistered.class, CustomCommandExecutor.class);
         registerAnnotatedClasses(PluginRegistered.class, CustomEventListener.class);
+    }
+
+    private void registerComponents() {
+        Set<Class<?>> componentClasses = ReflectionUtils.getClassesWithAnnotation(plugin.getBasePackageName(), QuillComponent.class);
+        for (Class<?> clazz : componentClasses) {
+            try {
+                Object componentInstance = createInstanceWithDependencies(clazz);
+                pluginComponentContext.getComponent(clazz);
+                logger.info("Registered component: " + clazz.getSimpleName());
+            } catch (Exception e) {
+                logger.severe("Failed to register component: " + clazz.getSimpleName());
+                e.printStackTrace();
+            }
+        }
     }
 
     public <T> void registerAnnotatedClasses(Class<? extends java.lang.annotation.Annotation> annotationClass, Class<T> toAssignClass) {
@@ -43,14 +60,13 @@ public class NewRegistrationHandler {
 
                     if (instance instanceof CustomCommandExecutor) {
                         handleCommandRegistration((CustomCommandExecutor) instance, clazz);
-                        return;
                     }
                     if (instance instanceof Listener) {
                         handleListenerRegistration((Listener) instance, clazz);
-                        return;
                     }
-                    logger.info("Registered component: " + clazz.getSimpleName());
-                    return;
+                    if(instance instanceof CustomService){
+                        logger.info("Registered serivce: " + clazz.getSimpleName());
+                    }
                 }
             } catch (Exception e) {
                 logger.severe("Failed to register component: " + clazz.getSimpleName());
@@ -90,7 +106,7 @@ public class NewRegistrationHandler {
             commandName = extractCommandName(clazz.getSimpleName());
         }
         plugin.getCommand(commandName).setExecutor(instance);
-        logger.info("Registered command: " + clazz.getSimpleName());
+        logger.info("Registered command: " + clazz.getSimpleName() + " commands name :" + commandName);
     }
 
     protected void handleListenerRegistration(Listener listenerInstance,Class<?> clazz){

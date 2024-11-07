@@ -11,18 +11,16 @@ import java.util.Random;
 @PluginRegistered(isCommand = true, commandName = "pizza")
 public class TestCommand2 extends CustomCommandExecutor{
 
-    private final TestService testService;
-    List<String> pizzaList = List.of("Margherita", "Pepperoni", "Hawaiian", "BBQ Chicken", "Veggie");
+    private final PizzaService pizzaService;
 
-    public TestCommand2(TestService testService) {
-        this.testService = testService;
+    public TestCommand2(PizzaService pizzaService) {
+        this.pizzaService = pizzaService;
     }
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        Random random = new Random();
-        String randomPizza = pizzaList.get(random.nextInt(pizzaList.size()));
-        commandSender.sendMessage("You ordered a: " + randomPizza);
+        commandSender.sendMessage("Pizza command fired!");
+        commandSender.sendMessage("You have ordered a: " + pizzaService.getRandomPizza());
         return true;
     }
 }

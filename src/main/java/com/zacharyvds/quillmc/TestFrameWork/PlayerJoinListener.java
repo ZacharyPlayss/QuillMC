@@ -8,9 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 @PluginRegistered
 public class PlayerJoinListener extends CustomEventListener<PlayerJoinEvent> {
+    public PlayerJoinListener() {
 
-    public PlayerJoinListener(Plugin plugin) {
-        super(plugin);
     }
 
     @EventHandler
